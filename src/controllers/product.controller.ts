@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { update } from "lodash";
 import {
   CreateProductInput,
+  DeleteProductInput,
+  ReadProductInput,
   UpdateProductInput,
 } from "../schemas/product.schema";
 import {
@@ -10,6 +11,7 @@ import {
   findAndUpdateProduct,
   deleteProduct,
 } from "../services/product.service";
+import log from "../utils/logger";
 
 export async function createProductHander(
   req: Request<{}, {}, CreateProductInput["body"]>,
@@ -24,7 +26,7 @@ export async function createProductHander(
 }
 
 export async function getProductHandler(
-  req: Request<UpdateProductInput["params"]>,
+  req: Request<ReadProductInput["params"]>,
   res: Response
 ) {
   const productId = req.params.productId;
@@ -37,9 +39,13 @@ export async function getProductHandler(
   return res.send(product);
 }
 
-export async function updateProductHandler(req: Request, res: Response) {
+export async function updateProductHandler(
+  req: Request<UpdateProductInput["params"], {}, UpdateProductInput["body"]>,
+  res: Response
+) {
   const userId = res.locals.user._id;
   const productId = req.params.productId;
+  const update = req.body;
 
   const product = await findProduct({ productId });
 
@@ -51,14 +57,23 @@ export async function updateProductHandler(req: Request, res: Response) {
     return res.sendStatus(403);
   }
 
-  const updateProduct = await findAndUpdateProduct({ productId }, update, {
-    new: true,
-  });
+  log.info(req.body);
 
-  return res.send(updateProduct);
+  const updatedProduct = await findAndUpdateProduct(
+    { productId },
+    { ...update },
+    {
+      new: true,
+    }
+  );
+
+  return res.send(updatedProduct);
 }
 
-export async function deleteProductHandler(req: Request, res: Response) {
+export async function deleteProductHandler(
+  req: Request<DeleteProductInput["params"]>,
+  res: Response
+) {
   const userId = res.locals.user._id;
   const productId = req.params.productId;
 
