@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 import { customAlphabet } from "nanoid";
 import { UserDocument } from "./user.model";
 

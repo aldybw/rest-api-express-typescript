@@ -7,9 +7,9 @@ import {
 } from "../schemas/product.schema";
 import {
   createProduct,
-  findProduct,
-  findAndUpdateProduct,
   deleteProduct,
+  findAndUpdateProduct,
+  findProduct,
 } from "../services/product.service";
 import log from "../utils/logger";
 

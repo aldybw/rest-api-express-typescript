@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
 import config from "config";
+import { Request, Response } from "express";
 import {
   createSession,
   findSessions,

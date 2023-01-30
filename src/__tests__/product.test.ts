@@ -1,9 +1,9 @@
-import supertest from "supertest";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import createServer from "../utils/server";
 import mongoose from "mongoose";
+import supertest from "supertest";
 import { createProduct } from "../services/product.service";
 import { signJwt } from "../utils/jwt.utils";
+import createServer from "../utils/server";
 
 const app = createServer();
 
